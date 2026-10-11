@@ -6,7 +6,7 @@
 // ---------- 1. CONTENT (edit this part to update your site) ----------
 
 const NAME = "Prasad Bangunde";
-const YEAR = 2026; 
+const YEAR = 2026; // update once a year
 
 const GITHUB_URL = "https://github.com/prasadbangunde";
 const LINKEDIN_URL = "https://www.linkedin.com/in/prasad-bangunde/";
@@ -40,17 +40,23 @@ type Project = {
   description: string;
   tags: string[];
   githubUrl: string;
-  liveUrl: string; // "#" is a placeholder until you verify the live demo
+  liveUrl?: string; // optional: add a verified live demo link here and a "Live demo" link appears automatically
 };
 
 const projects: Project[] = [
+  {
+    title: "ApniSec",
+    description:
+      "An issue management system with secure login, role and ownership-based access, and API routes for creating, filtering, updating and deleting issues.",
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Zod", "JWT", "Tailwind CSS"],
+    githubUrl: "https://github.com/prasadbangunde/apnisec-issue-management-system",
+  },
   {
     title: "PrepSync AI",
     description:
       "An AI voice interview coach. It lets you practise interviews by speaking out loud, and it can use your resume to shape the questions.",
     tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Gemini", "Groq", "Vapi"],
     githubUrl: "https://github.com/prasadbangunde/PrepSync-Ai-voice-interview-coach",
-    liveUrl: "#", // TODO: replace with your verified live demo link
   },
   {
     title: "Spendly",
@@ -58,15 +64,6 @@ const projects: Project[] = [
       "A personal finance dashboard with AI-powered features such as a spending coach, receipt scanning and budget generation.",
     tags: ["React", "FastAPI", "SQLite", "Groq", "Recharts"],
     githubUrl: "https://github.com/prasadbangunde/Spendly-AI-Powered-Finance-Dashboard",
-    liveUrl: "#", // TODO: replace with your verified live demo link
-  },
-  {
-    title: "ApniSec",
-    description:
-      "An issue management system with secure login, role and ownership-based access, and API routes for creating, filtering, updating and deleting issues.",
-    tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Zod", "JWT", "Tailwind CSS"],
-    githubUrl: "https://github.com/prasadbangunde/apnisec-issue-management-system",
-    liveUrl: "#", // TODO: replace with your verified live demo link
   },
 ];
 
@@ -281,13 +278,17 @@ export default function Home() {
                   >
                     GitHub &rarr;
                   </a>
-                  {/* Placeholder link: replace liveUrl in the projects array above */}
-                  <a
-                    href={project.liveUrl}
-                    className="text-gray-500 underline-offset-4 hover:text-black hover:underline"
-                  >
-                    Live demo (coming soon)
-                  </a>
+                  {/* Only shown when the project has a liveUrl */}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-500 underline-offset-4 hover:text-black hover:underline"
+                    >
+                      Live demo &rarr;
+                    </a>
+                  )}
                 </div>
               </article>
             ))}
