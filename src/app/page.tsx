@@ -26,42 +26,63 @@ const navLinks: NavLink[] = [
 ];
 
 const skills: string[] = [
+  "C++",
+  "Python",
   "Next.js",
   "React",
   "TypeScript",
   "JavaScript",
   "Tailwind CSS",
+  "SQL",
   "PostgreSQL",
   "Git & GitHub",
 ];
 
 type Project = {
   title: string;
-  description: string;
+  problem: string; // one line: what problem the project addresses
+  features: string[]; // real features only, taken from the project's README / your resume
   tags: string[];
   githubUrl: string;
-  liveUrl?: string; // optional: add a verified live demo link here and a "Live demo" link appears automatically
+  liveUrl?: string; // optional: add a verified live demo link and a "Live demo" link appears automatically
 };
 
 const projects: Project[] = [
   {
     title: "ApniSec",
-    description:
-      "An issue management system with secure login, role and ownership-based access, and API routes for creating, filtering, updating and deleting issues.",
+    problem:
+      "Logging and tracking security work, such as cloud security, red-team and VAPT issues, in one place.",
+    features: [
+      "JWT login stored in HTTP-only cookies, with bcrypt password hashing",
+      "Create, update, delete and filter issues, with ownership checks",
+      "Zod request validation and API rate limiting",
+      "Email notifications with Resend on registration and issue creation",
+    ],
     tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Zod", "JWT", "Tailwind CSS"],
     githubUrl: "https://github.com/prasadbangunde/apnisec-issue-management-system",
   },
   {
     title: "PrepSync AI",
-    description:
-      "An AI voice interview coach. It lets you practise interviews by speaking out loud, and it can use your resume to shape the questions.",
+    problem:
+      "Practising interviews out loud with feedback, and checking a resume against a job description.",
+    features: [
+      "Voice mock interviews with AI-generated questions",
+      "ATS resume analysis against job descriptions",
+      "AI feedback on interview answers",
+      "Dashboard with interview history, and JWT login",
+    ],
     tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Gemini", "Groq", "Vapi"],
     githubUrl: "https://github.com/prasadbangunde/PrepSync-Ai-voice-interview-coach",
   },
   {
     title: "Spendly",
-    description:
-      "A personal finance dashboard with AI-powered features such as a spending coach, receipt scanning and budget generation.",
+    problem: "Tracking expenses, budgets and savings goals in one dashboard.",
+    features: [
+      "Income, expense, budget and savings-goal tracking",
+      "Automated expense categorisation",
+      "AI features such as a spending coach chat, receipt scanning and budget generation",
+      "JWT login and interactive dashboards",
+    ],
     tags: ["React", "FastAPI", "SQLite", "Groq", "Recharts"],
     githubUrl: "https://github.com/prasadbangunde/Spendly-AI-Powered-Finance-Dashboard",
   },
@@ -190,24 +211,19 @@ export default function Home() {
         <section className="mx-auto max-w-5xl px-6 pb-24 pt-20 sm:pb-32 sm:pt-28">
           <p className="text-sm font-medium text-gray-500">Hi, I&apos;m {NAME}</p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Building thoughtful digital experiences
+            Full-Stack Developer building thoughtful digital experiences
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-600">
-            I&apos;m a Computer Science graduate pursuing Software Developer and
-            Full-Stack Developer roles.
+            Computer Science graduate from Pune seeking Software Developer and
+            Full-Stack Developer roles. I build web apps with Next.js,
+            TypeScript and PostgreSQL.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <a
               href="#projects"
               className="rounded-md bg-black px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800"
             >
-              View my projects
-            </a>
-            <a
-              href="#contact"
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium text-black transition-colors hover:border-black"
-            >
-              Get in touch
+              View projects
             </a>
             <a
               href={RESUME_URL}
@@ -216,6 +232,22 @@ export default function Home() {
               className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium text-black transition-colors hover:border-black"
             >
               Resume
+            </a>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium text-black transition-colors hover:border-black"
+            >
+              GitHub
+            </a>
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium text-black transition-colors hover:border-black"
+            >
+              LinkedIn
             </a>
           </div>
         </section>
@@ -230,8 +262,8 @@ export default function Home() {
             </p>
             <p>
               My main projects, PrepSync AI and Spendly, are full-stack applications
-              that use AI features. I&apos;m now looking for an entry-level role in
-              India where I can keep learning and contribute to a real product.
+              that use AI features. I&apos;m now looking for an entry-level role where
+              I can keep learning and contribute to a real product.
             </p>
           </div>
         </Section>
@@ -252,43 +284,66 @@ export default function Home() {
 
         {/* PROJECTS */}
         <Section id="projects" title="Projects">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {/* One full-width card per project. Inside each card, two columns from tablet width up. */}
+          <div className="space-y-6">
             {projects.map((project) => (
               <article
                 key={project.title}
-                className="flex flex-col rounded-xl border border-gray-200 p-6 transition-colors hover:border-black"
+                className="grid gap-8 rounded-xl border border-gray-200 p-6 transition-colors hover:border-black sm:p-8 md:grid-cols-2"
               >
-                <h3 className="text-xl font-semibold tracking-tight">{project.title}</h3>
-                <p className="mt-3 flex-1 leading-relaxed text-gray-600">
-                  {project.description}
-                </p>
+                {/* Left column: title, problem, tech tags, links */}
+                <div className="flex flex-col">
+                  <h3 className="text-xl font-semibold tracking-tight">{project.title}</h3>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
-                  ))}
-                </div>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-500">
+                    Problem
+                  </p>
+                  <p className="mt-2 leading-relaxed text-gray-700">{project.problem}</p>
 
-                <div className="mt-6 flex gap-5 text-sm font-medium">
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline-offset-4 hover:underline"
-                  >
-                    GitHub &rarr;
-                  </a>
-                  {/* Only shown when the project has a liveUrl */}
-                  {project.liveUrl && (
+                  <ul className="mt-5 flex flex-wrap gap-2" aria-label={`${project.title} technologies`}>
+                    {project.tags.map((tag) => (
+                      <li key={tag}>
+                        <Tag>{tag}</Tag>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-6 flex gap-5 text-sm font-medium md:mt-auto md:pt-6">
                     <a
-                      href={project.liveUrl}
+                      href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-500 underline-offset-4 hover:text-black hover:underline"
+                      className="underline-offset-4 hover:underline"
                     >
-                      Live demo &rarr;
+                      GitHub &rarr;
                     </a>
-                  )}
+                    {/* Only shown when the project has a liveUrl */}
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-500 underline-offset-4 hover:text-black hover:underline"
+                      >
+                        Live demo &rarr;
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right column: what was built */}
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-gray-500">
+                    What I built
+                  </p>
+                  <ul className="mt-3 space-y-3 text-gray-700">
+                    {project.features.map((feature) => (
+                      <li key={feature} className="flex gap-3 leading-relaxed">
+                        <span aria-hidden="true" className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </article>
             ))}
