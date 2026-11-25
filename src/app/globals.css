@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
+/* Light theme only: the portfolio is a white, minimal design on every device.
+   (The starter's dark-mode block was removed because it painted the page edges black.) */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111111;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -12,15 +15,44 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Geist is loaded in layout.tsx. The starter forced Arial here, so Geist was never used. */
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: #111111;
+  color: #ffffff;
+}
+
+/* One gentle entrance animation, used on the hero only. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Respect people who ask their device for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-fade-up {
+    animation: none;
+  }
 }

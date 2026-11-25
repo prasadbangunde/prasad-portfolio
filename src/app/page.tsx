@@ -1,183 +1,66 @@
 // src/app/page.tsx
-// Portfolio homepage for Prasad Bangunde.
-// This is a Next.js App Router Server Component: no hooks, no "use client" needed.
-// All the content lives in the plain arrays below, so you can edit text without touching the layout.
+// The portfolio homepage. This is a Server Component: it only arranges the pieces.
+// - All text comes from src/data/portfolio.ts
+// - Reusable pieces live in src/components/ (Section, ProjectCard, Timeline, ButtonLink, Tag, MobileMenu)
 
-// ---------- 1. CONTENT (edit this part to update your site) ----------
-
-const NAME = "Prasad Bangunde";
-const YEAR = 2026; // update once a year
-
-const GITHUB_URL = "https://github.com/prasadbangunde";
-const LINKEDIN_URL = "https://www.linkedin.com/in/prasad-bangunde/";
-const EMAIL = "prasadbangunde8@gmail.com";
-
-// The resume PDF must be saved in the project's "public" folder with exactly this name.
-const RESUME_URL = "/Prasad-Bangunde-Resume.pdf";
-
-type NavLink = { label: string; href: string };
-
-const navLinks: NavLink[] = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
-];
-
-const skills: string[] = [
-  "C++",
-  "Python",
-  "Next.js",
-  "React",
-  "TypeScript",
-  "JavaScript",
-  "Tailwind CSS",
-  "SQL",
-  "PostgreSQL",
-  "Git & GitHub",
-];
-
-type Project = {
-  title: string;
-  problem: string; // one line: what problem the project addresses
-  features: string[]; // real features only, taken from the project's README / your resume
-  tags: string[];
-  githubUrl: string;
-  liveUrl?: string; // optional: add a verified live demo link and a "Live demo" link appears automatically
-};
-
-const projects: Project[] = [
-  {
-    title: "ApniSec",
-    problem:
-      "Logging and tracking security work, such as cloud security, red-team and VAPT issues, in one place.",
-    features: [
-      "JWT login stored in HTTP-only cookies, with bcrypt password hashing",
-      "Create, update, delete and filter issues, with ownership checks",
-      "Zod request validation and API rate limiting",
-      "Email notifications with Resend on registration and issue creation",
-    ],
-    tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Zod", "JWT", "Tailwind CSS"],
-    githubUrl: "https://github.com/prasadbangunde/apnisec-issue-management-system",
-  },
-  {
-    title: "PrepSync AI",
-    problem:
-      "Practising interviews out loud with feedback, and checking a resume against a job description.",
-    features: [
-      "Voice mock interviews with AI-generated questions",
-      "ATS resume analysis against job descriptions",
-      "AI feedback on interview answers",
-      "Dashboard with interview history, and JWT login",
-    ],
-    tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Gemini", "Groq", "Vapi"],
-    githubUrl: "https://github.com/prasadbangunde/PrepSync-Ai-voice-interview-coach",
-  },
-  {
-    title: "Spendly",
-    problem: "Tracking expenses, budgets and savings goals in one dashboard.",
-    features: [
-      "Income, expense, budget and savings-goal tracking",
-      "Automated expense categorisation",
-      "AI features such as a spending coach chat, receipt scanning and budget generation",
-      "JWT login and interactive dashboards",
-    ],
-    tags: ["React", "FastAPI", "SQLite", "Groq", "Recharts"],
-    githubUrl: "https://github.com/prasadbangunde/Spendly-AI-Powered-Finance-Dashboard",
-  },
-];
-
-type TimelineItem = {
-  title: string;
-  place: string;
-  period: string;
-};
-
-const education: TimelineItem[] = [
-  {
-    title: "B.Tech in Computer Science and Engineering",
-    place: "D Y Patil International University, Pune",
-    period: "2022 – 2026",
-  },
-];
-
-const experience: TimelineItem[] = [
-  {
-    title: "Web Development Trainee",
-    place: "TechOctaNet Services",
-    period: "May 2025 – Jul 2025",
-  },
-];
-
-// ---------- 2. SMALL REUSABLE PIECES ----------
-// Reusing small components keeps the page short and easy to explain.
-
-// A shared wrapper so every section has the same width, padding and spacing.
-function Section({
-  id,
-  title,
-  children,
-}: {
-  id: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="scroll-mt-20 border-t border-gray-200 py-20 sm:py-24">
-      <div className="mx-auto max-w-5xl px-6">
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-500">
-          {title}
-        </h2>
-        <div className="mt-8">{children}</div>
-      </div>
-    </section>
-  );
-}
-
-// A small rounded label, used for skills and project technologies.
-function Tag({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700">
-      {children}
-    </span>
-  );
-}
-
-// One entry in the education / experience lists.
-function Timeline({ items }: { items: TimelineItem[] }) {
-  return (
-    <ul className="space-y-6">
-      {items.map((item) => (
-        <li key={item.title} className="border-l border-gray-200 pl-5">
-          <p className="font-medium text-black">{item.title}</p>
-          <p className="mt-1 text-gray-600">{item.place}</p>
-          <p className="mt-1 text-sm text-gray-500">{item.period}</p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-// ---------- 3. THE PAGE ----------
+import ButtonLink from "../components/ButtonLink";
+import MobileMenu from "../components/MobileMenu";
+import ProjectCard from "../components/ProjectCard";
+import Section from "../components/Section";
+import Tag from "../components/Tag";
+import Timeline from "../components/Timeline";
+import {
+  EMAIL,
+  GITHUB_URL,
+  LINKEDIN_URL,
+  NAME,
+  RESUME_URL,
+  ROLE,
+  YEAR,
+  aboutParagraphs,
+  education,
+  experience,
+  githubRepos,
+  heroHeadline,
+  heroIntro,
+  heroStack,
+  navLinks,
+  projects,
+  skillGroups,
+} from "../data/portfolio";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-black antialiased">
-      {/* NAVIGATION */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+    // The [&_a:focus-visible] classes give every link a clear black outline for keyboard users.
+    <div
+      id="top"
+      className="min-h-screen bg-white text-black [&_a:focus-visible]:outline [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-2 [&_a:focus-visible]:outline-black"
+    >
+      {/* Skip link: invisible until a keyboard user presses Tab, then it jumps past the nav */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-black focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+      >
+        Skip to main content
+      </a>
+
+      {/* ---------- NAVIGATION ---------- */}
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/85 backdrop-blur">
+        <nav
+          aria-label="Main"
+          className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"
+        >
           <a href="#top" className="text-base font-semibold tracking-tight">
             {NAME}
           </a>
 
           {/* Desktop links (hidden on small screens) */}
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-7 md:flex">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="text-sm text-gray-600 transition-colors hover:text-black"
+                  className="relative text-sm text-gray-600 transition-colors hover:text-black after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-black after:transition-transform after:duration-200 hover:after:scale-x-100 motion-reduce:after:transition-none"
                 >
                   {link.label}
                 </a>
@@ -185,231 +68,217 @@ export default function Home() {
             ))}
           </ul>
 
-          {/* Mobile menu: the native <details> element needs no JavaScript */}
-          <details className="relative md:hidden">
-            <summary className="cursor-pointer list-none rounded-md border border-gray-200 px-3 py-1.5 text-sm text-gray-700 hover:border-gray-400">
-              Menu
-            </summary>
-            <ul className="absolute right-0 mt-2 w-44 rounded-md border border-gray-200 bg-white py-2 shadow-sm">
-              {navLinks.map((link) => (
-                <li key={link.href}>
+          {/* Mobile menu: a small client component that closes after a tap */}
+          <MobileMenu links={navLinks} />
+        </nav>
+      </header>
+
+      <main id="main" tabIndex={-1} className="outline-none">
+        {/* ---------- HERO ---------- */}
+        <section
+          aria-labelledby="hero-heading"
+          className="mx-auto max-w-5xl px-6 pb-20 pt-16 sm:pb-28 sm:pt-24"
+        >
+          <p
+            className="animate-fade-up inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700"
+          >
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            Open to opportunities
+          </p>
+
+          <p
+            className="animate-fade-up mt-8 text-base font-medium text-gray-900"
+            style={{ animationDelay: "60ms" }}
+          >
+            {NAME}
+            <span className="text-gray-400"> · </span>
+            <span className="text-gray-500">{ROLE}</span>
+          </p>
+
+          <h1
+            id="hero-heading"
+            className="animate-fade-up mt-4 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl"
+            style={{ animationDelay: "120ms" }}
+          >
+            {heroHeadline}
+          </h1>
+
+          <ul
+            aria-label="Main technologies"
+            className="animate-fade-up mt-6 flex flex-wrap gap-2"
+            style={{ animationDelay: "180ms" }}
+          >
+            {heroStack.map((tech) => (
+              <li key={tech}>
+                <Tag>{tech}</Tag>
+              </li>
+            ))}
+          </ul>
+
+          <p
+            className="animate-fade-up mt-6 max-w-2xl text-lg leading-relaxed text-gray-600"
+            style={{ animationDelay: "240ms" }}
+          >
+            {heroIntro}
+          </p>
+
+          <div
+            className="animate-fade-up mt-10 flex flex-wrap items-center gap-3"
+            style={{ animationDelay: "300ms" }}
+          >
+            <ButtonLink href="#projects" variant="primary">
+              View projects
+            </ButtonLink>
+            <ButtonLink href={RESUME_URL} variant="secondary" download>
+              Download resume
+            </ButtonLink>
+            <ButtonLink href={GITHUB_URL} variant="secondary" external>
+              GitHub
+            </ButtonLink>
+            <ButtonLink href={LINKEDIN_URL} variant="secondary" external>
+              LinkedIn
+            </ButtonLink>
+          </div>
+        </section>
+
+        {/* ---------- ABOUT ---------- */}
+        <Section id="about" number="01" title="About">
+          <div className="max-w-2xl space-y-5 text-lg leading-relaxed text-gray-700">
+            {aboutParagraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+        </Section>
+
+        {/* ---------- EXPERIENCE AND EDUCATION ---------- */}
+        <Section id="experience" number="02" title="Experience">
+          <div className="grid gap-16 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12">
+            <Timeline items={experience} />
+
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-gray-500">
+                Education
+              </h3>
+              <ul className="mt-6 space-y-6">
+                {education.map((item) => (
+                  <li key={item.degree}>
+                    <p className="font-semibold tracking-tight">{item.degree}</p>
+                    <p className="mt-1 text-gray-600">{item.school}</p>
+                    <p className="mt-1 text-sm text-gray-500">{item.period}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+
+        {/* ---------- PROJECTS ---------- */}
+        <Section id="projects" number="03" title="Projects">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </div>
+        </Section>
+
+        {/* ---------- SKILLS ---------- */}
+        <Section id="skills" number="04" title="Skills">
+          <dl className="border-b border-gray-200">
+            {skillGroups.map((group) => (
+              <div
+                key={group.category}
+                className="grid gap-3 border-t border-gray-200 py-5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-6"
+              >
+                <dt className="text-sm font-medium text-gray-500">{group.category}</dt>
+                <dd>
+                  <ul className="flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <li key={item}>
+                        <Tag>{item}</Tag>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+
+        {/* ---------- GITHUB ---------- */}
+        <Section id="github" number="05" title="GitHub">
+          <div className="grid gap-10 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-12">
+            <div>
+              <p className="max-w-md text-lg leading-relaxed text-gray-700">
+                My projects are open on GitHub. Browse the repositories to see how
+                they are built.
+              </p>
+              <div className="mt-6">
+                <ButtonLink href={GITHUB_URL} variant="secondary" external>
+                  View GitHub profile
+                </ButtonLink>
+              </div>
+            </div>
+
+            <ul className="divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200">
+              {githubRepos.map((repo) => (
+                <li key={repo.url}>
                   <a
-                    href={link.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
+                    href={repo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-gray-50"
                   >
-                    {link.label}
+                    <span>
+                      <span className="block font-medium">{repo.name}</span>
+                      <span className="mt-0.5 block text-sm text-gray-500">
+                        {repo.description}
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="text-gray-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-black motion-reduce:transition-none"
+                    >
+                      &rarr;
+                    </span>
+                    <span className="sr-only">(opens in a new tab)</span>
                   </a>
                 </li>
               ))}
             </ul>
-          </details>
-        </nav>
-      </header>
-
-      <main id="top">
-        {/* HERO + INTRODUCTION */}
-        <section className="mx-auto max-w-5xl px-6 pb-24 pt-20 sm:pb-32 sm:pt-28">
-          <p className="text-sm font-medium text-gray-500">Hi, I&apos;m {NAME}</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Full-Stack Developer building thoughtful digital experiences
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-600">
-            Computer Science graduate from Pune seeking Software Developer and
-            Full-Stack Developer roles. I build web apps with Next.js,
-            TypeScript and PostgreSQL.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="#projects"
-              className="rounded-md bg-black px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800"
-            >
-              View projects
-            </a>
-            <a
-              href={RESUME_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium text-black transition-colors hover:border-black"
-            >
-              Resume
-            </a>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium text-black transition-colors hover:border-black"
-            >
-              GitHub
-            </a>
-            <a
-              href={LINKEDIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium text-black transition-colors hover:border-black"
-            >
-              LinkedIn
-            </a>
           </div>
-        </section>
+        </Section>
 
-        {/* ABOUT */}
-        <Section id="about" title="About">
-          <div className="max-w-2xl space-y-5 text-lg leading-relaxed text-gray-700">
-            <p>
-              I recently completed my B.Tech in Computer Science and Engineering at
-              D Y Patil International University, Pune. I enjoy building web
-              applications from the database to the user interface.
+        {/* ---------- CONTACT ---------- */}
+        <Section id="contact" number="06" title="Contact">
+          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-8 sm:p-12">
+            <h3 className="max-w-xl text-2xl font-semibold tracking-tight sm:text-3xl">
+              Let&apos;s build something useful together.
+            </h3>
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-gray-600">
+              I&apos;m open to Software Developer, Full-Stack Developer and SDE
+              roles. Send me a message or connect with me online.
             </p>
-            <p>
-              My main projects, PrepSync AI and Spendly, are full-stack applications
-              that use AI features. I&apos;m now looking for an entry-level role where
-              I can keep learning and contribute to a real product.
-            </p>
-          </div>
-        </Section>
-
-        {/* SKILLS */}
-        <Section id="skills" title="Skills">
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {skills.map((skill) => (
-              <li
-                key={skill}
-                className="rounded-lg border border-gray-200 px-4 py-4 text-sm font-medium transition-colors hover:border-black"
-              >
-                {skill}
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* PROJECTS */}
-        <Section id="projects" title="Projects">
-          {/* One full-width card per project. Inside each card, two columns from tablet width up. */}
-          <div className="space-y-6">
-            {projects.map((project) => (
-              <article
-                key={project.title}
-                className="grid gap-8 rounded-xl border border-gray-200 p-6 transition-colors hover:border-black sm:p-8 md:grid-cols-2"
-              >
-                {/* Left column: title, problem, tech tags, links */}
-                <div className="flex flex-col">
-                  <h3 className="text-xl font-semibold tracking-tight">{project.title}</h3>
-
-                  <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-500">
-                    Problem
-                  </p>
-                  <p className="mt-2 leading-relaxed text-gray-700">{project.problem}</p>
-
-                  <ul className="mt-5 flex flex-wrap gap-2" aria-label={`${project.title} technologies`}>
-                    {project.tags.map((tag) => (
-                      <li key={tag}>
-                        <Tag>{tag}</Tag>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-6 flex gap-5 text-sm font-medium md:mt-auto md:pt-6">
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline-offset-4 hover:underline"
-                    >
-                      GitHub &rarr;
-                    </a>
-                    {/* Only shown when the project has a liveUrl */}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-500 underline-offset-4 hover:text-black hover:underline"
-                      >
-                        Live demo &rarr;
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                {/* Right column: what was built */}
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-gray-500">
-                    What I built
-                  </p>
-                  <ul className="mt-3 space-y-3 text-gray-700">
-                    {project.features.map((feature) => (
-                      <li key={feature} className="flex gap-3 leading-relaxed">
-                        <span aria-hidden="true" className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </Section>
-
-        {/* EDUCATION & EXPERIENCE */}
-        <Section id="experience" title="Education & Experience">
-          <div className="grid gap-12 md:grid-cols-2">
-            <div>
-              <h3 className="mb-6 text-xl font-semibold tracking-tight">Education</h3>
-              <Timeline items={education} />
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href={`mailto:${EMAIL}`} variant="primary">
+                Email me
+              </ButtonLink>
+              <ButtonLink href={LINKEDIN_URL} variant="secondary" external>
+                LinkedIn
+              </ButtonLink>
+              <ButtonLink href={GITHUB_URL} variant="secondary" external>
+                GitHub
+              </ButtonLink>
+              <ButtonLink href={RESUME_URL} variant="secondary" download>
+                Download resume
+              </ButtonLink>
             </div>
-            <div>
-              <h3 className="mb-6 text-xl font-semibold tracking-tight">Experience</h3>
-              <Timeline items={experience} />
-            </div>
-          </div>
-        </Section>
-
-        {/* CONTACT */}
-        <Section id="contact" title="Contact">
-          <h3 className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">
-            Let&apos;s talk about opportunities.
-          </h3>
-          <p className="mt-4 max-w-xl text-lg text-gray-600">
-            I&apos;m open to Software Developer and Full-Stack Developer roles. The
-            best way to reach me is through any of the links below.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium transition-colors hover:border-black hover:bg-black hover:text-white"
-            >
-              GitHub
-            </a>
-            <a
-              href={LINKEDIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium transition-colors hover:border-black hover:bg-black hover:text-white"
-            >
-              LinkedIn
-            </a>
-            <a
-              href={RESUME_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium transition-colors hover:border-black hover:bg-black hover:text-white"
-            >
-              Resume
-            </a>
-            <a
-              href={`mailto:${EMAIL}`}
-              className="rounded-md border border-gray-300 px-5 py-3 text-sm font-medium transition-colors hover:border-black hover:bg-black hover:text-white"
-            >
-              Email
-            </a>
+            <p className="mt-6 font-mono text-sm text-gray-500">{EMAIL}</p>
           </div>
         </Section>
       </main>
 
-      {/* FOOTER */}
-      <footer className="border-t border-gray-200 py-8">
+      {/* ---------- FOOTER ---------- */}
+      <footer className="border-t border-gray-200 py-10">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-6 text-sm text-gray-500 sm:flex-row">
           <p>
             &copy; {YEAR} {NAME}. All rights reserved.
